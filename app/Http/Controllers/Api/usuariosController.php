@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Usuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class usuariosController extends Controller
 {
@@ -63,7 +64,7 @@ class usuariosController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'role' => $request->role,
-            'password' => $defaultPassword,
+            'password' => Hash::make($defaultPassword),
             'genre' => $request->genre
         ]);
 
@@ -211,7 +212,6 @@ class usuariosController extends Controller
             'username' => 'max:255',
             'email' => 'email',
             'role' => 'in:Admin,Editor,Vista',
-            'password' => 'max:255',
             'active' => 'boolean',
             'genre' => 'in:male,female'
         ]);
@@ -238,7 +238,7 @@ class usuariosController extends Controller
         }
 
         if( $request->has('password') ){
-            $usuario->password = $request->password;
+            $usuario->password = Hash::make($request->password);
         }
 
         if( $request->has('active') ){
